@@ -1,4 +1,4 @@
-<p align="center"><img src="https://theinventory.travelgosystems.net/images/logo.png"></p>
+<p align="center"><img src="https://github.com/arielgarmendia/thePlanets/blob/master/Website/wwwroot/images/logo_big.png"></p>
 
 ## **About:**
 
