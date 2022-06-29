@@ -1,0 +1,413 @@
+﻿@model DashboardPageData
+
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles {
+    <!-- Stylesheets ============================================= -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/dark.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/font-icons.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/magnific-popup.css" type="text/css" />
+
+    <link rel="stylesheet" href="~/css/responsive.css" type="text/css" />
+
+    <!-- Radio Checkbox Plugin -->
+    <link rel="stylesheet" href="~/css/components/radio-checkbox.css" type="text/css" />
+
+    <!-- Date & Time Picker CSS -->
+    <link rel="stylesheet" href="~/css/datepicker.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/components/daterangepicker.css" type="text/css" />
+
+    <!-- Bootstrap Data Table Plugin -->
+    <link rel="stylesheet" href="~/css/components/bs-datatable.css" type="text/css" />
+
+    <link rel="stylesheet" href="~/css/sweetalert2.css" type="text/css" />
+}
+
+<!-- Header  ============================================= -->
+<header id="header" class="dark">
+
+    <div id="header-wrap">
+
+        <div class="container clearfix">
+
+            <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
+
+            <!-- Logo
+            ============================================= -->
+            <div id="logo">
+                <a href="/" class="standard-logo" data-dark-logo="images/logo.png"><img src="images/logo.png" alt="theInventory"></a>
+                <a href="/" class="retina-logo" data-dark-logo="images/logo.png"><img src="images/logo.png" alt="theInventory"></a>
+            </div>
+            <!--
+            #logo end -->
+            <!-- Primary Navigation
+            ============================================= -->
+            <nav id="primary-menu" class="style-6">
+
+                <ul>
+                    <li class="current"><a href=""><div>Dashboard</div></a></li>
+                    <li><a href="/insertion"><div>Insert Product</div></a></li>
+                    <li><a href="/account/logout"><div>Log Out</div></a></li>
+                </ul>
+
+            </nav>
+            <!-- #primary-menu end -->
+
+        </div>
+
+    </div>
+
+</header>
+<!-- #header end -->
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+
+    <div class="container clearfix">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="insertion"><i class=""></i> &nbsp;INSERT PRODUCT</a></li>
+        </ol>
+    </div>
+
+</section>
+<!-- #page-title end -->
+<!-- Content
+============================================= -->
+<section id="content">
+
+    <div class="content-wrap">
+
+        <div class="container clearfix nobottommargin nobottompadding">
+            <div id="snackbar">
+                @if (!Model.ProductRemoved && Model.Expired != null && Model.Expired.Count != 0)
+                {
+                    <text>You have @Model.Expired.Count.ToString() expired products!</text>
+                }
+            </div>
+
+            <div id="snackbar2">
+                @if (Model.ProductRemoved)
+                {
+                    <text>Product has been successfuly removed!</text>
+                }
+            </div>
+
+            <h4>PRODUCTS INVENTORY</h4>
+
+            <div class="tabs clearfix" id="tab-3">
+
+                <ul class="tab-nav tab-nav2 clearfix">
+
+                    <li><a href="#tabs-1">ALL PRODUCTS</a></li>
+                    <li class="hidden-phone"><a href="#tabs-3">EXPIRED PRODUCTS</a></li>
+                </ul>
+
+                <div class="tab-container">
+
+                    <!-- Tab COMPILED -->
+                    <div class="tab-content clearfix" id="tabs-1">
+                        <div class="col_full bottommargin-lg">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="input-daterange travel-date-group">
+                                        <label>Choose a Date Range:</label>
+                                        <table border="0" cellspacing="5" cellpadding="5">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        From
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-daterange travel-date-group">
+                                                            <div class="input-group">
+                                                                <input type="text" id="min" name="min" class="form-control tleft format today" placeholder="DD-MM-YYYY" />
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text"><i class="icon-calendar2"></i></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        To
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-daterange travel-date-group">
+                                                            <div class="input-group">
+                                                                <input type="text" id="max" name="max" class="form-control tleft format today" placeholder="DD-MM-YYYY" />
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text"><i class="icon-calendar2"></i></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="table-editable">
+                                        <table id="datatable1" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>Insertion Date</th>
+                                                    <th>Type</th>
+                                                    <th class="text-center"></th>
+                                                    <th class="text-center"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.Products != null && Model.Products.Count != 0)
+                                                {
+                                                    foreach (var product in Model.Products)
+                                                    {
+                                                        <tr>
+                                                            <td class="pt-3-half">@product.Name</td>
+                                                            <td class="pt-3-half">@product.InsertionDate.ToString("dd/MM/yyyy")</td>
+                                                            <td class="pt-3-half">@product.Type</td>
+                                                            <td style="text-align:center">
+                                                                <span class="table-remove"><a target="_self" href="javascript:;" onclick="event.stopPropagation(); removeProduct('@(product.Name)');" class="btn btn-danger btn-rounded btn-sm my-0">Remove</a></span>
+                                                            </td>
+                                                            <td style="text-align:center">
+                                                                <span class="table-remove"><a target="_blank" href="dashboard/document/@product.Name" class="btn btn-info btn-rounded btn-sm my-0">Generate Document</a></span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Tab COMPILED -->
+                    <!-- Tab PROCESSED -->
+                    <div class="tab-content clearfix" id="tabs-3">
+                        <div class="col_full bottommargin-lg">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="input-daterange travel-date-group">
+                                        <label>Choose a Date Range:</label>
+                                        <table border="0" cellspacing="5" cellpadding="5">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        From
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-daterange travel-date-group">
+                                                            <div class="input-group">
+                                                                <input type="text" id="min2" name="min2" class="form-control tleft format today" placeholder="DD-MM-YYYY" />
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text"><i class="icon-calendar2"></i></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        To
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-daterange travel-date-group">
+                                                            <div class="input-group">
+                                                                <input type="text" id="max2" name="max2" class="form-control tleft format today" placeholder="DD-MM-YYYY" />
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text"><i class="icon-calendar2"></i></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="datatable3" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>Expiry Date</th>
+                                                    <th>Type</th>
+                                                    <th class="text-center"></th>
+                                                    <th class="text-center"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.Expired != null && Model.Expired.Count != 0)
+                                                {
+                                                    foreach (var product in Model.Expired)
+                                                    {
+                                                        <tr>
+                                                            <td>@product.Name</td>
+                                                            <td>@product.ExpiryDate.ToString("dd/MM/yyyy")</td>
+                                                            <td>@product.Type</td>
+                                                            <td style="text-align:center">
+                                                                <span class="table-remove"><a target="_self" href="javascript:;" onclick="event.stopPropagation(); removeProduct('@(product.Name)');" class="btn btn-danger btn-rounded btn-sm my-0">Remove</a></span>
+                                                            </td>
+                                                            <td style="text-align:center">
+                                                                <span class="table-remove"><a target="_blank" href="dashboard/document/@product.Name" class="btn btn-info btn-rounded btn-sm my-0">Generate Document</a></span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Tab PROCESSED -->
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- #content end -->
+
+@section Scripts{
+    <!-- External JavaScripts
+    ============================================= -->
+    <script src="~/js/jquery.js"></script>
+
+    <script src="~/js/plugins.js"></script>
+
+    <!-- Date & Time Picker JS -->
+    <script src="~/js/components/moment.js"></script>
+    <script src="~/js/datepicker.js"></script>
+
+    <!-- Include Date Range Picker -->
+    <script src="~/js/components/daterangepicker.js"></script>
+
+    <!-- Bootstrap Data Table Plugin -->
+    <script src="~/js/components/bs-datatable.js"></script>
+
+    <!-- Footer Scripts
+    ============================================= -->
+    <script src="js/functions.js"></script>
+
+    <!-- Site Scripts
+    ============================================= -->
+    <script src="~/js/site.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#datatable1').dataTable();
+            $('#datatable3').dataTable();
+            toast();
+
+            @if (Model.ProductRemoved)
+            {
+                <text>
+                    toastRemoved();
+                </text>
+            }
+        });
+
+
+        $(function () {
+            $('.travel-date-group .input-daterange').datepicker({
+                autoclose: true,
+                format: "dd/mm/yyyy",
+                todayHighlight: true
+            });
+        });
+
+        $(document).ready(function () {
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var min = settings.nTable.id == 'datatable1' ? $('#min').datepicker("getDate") : $('#min2').datepicker("getDate");
+                    var max = settings.nTable.id == 'datatable1' ? $('#max').datepicker("getDate") : $('#max2').datepicker("getDate");
+
+                    var dateParts = data[1].split("/");
+
+                    var startDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+
+                    if (min == null && max == null) { return true; }
+                    if (min == null && startDate <= max) { return true; }
+                    if (max == null && startDate >= min) { return true; }
+                    if (startDate <= max && startDate >= min) { return true; }
+                    return false;
+                }
+            );
+
+            $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+
+            $("#min2").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            $("#max2").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+
+            var table = $('#datatable1').DataTable();
+            var table2 = $('#datatable3').DataTable();
+
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#min, #max').change(function () {
+                table.draw();
+            });
+
+            $('#min2, #max2').change(function () {
+                table2.draw();
+            });
+        });
+
+        function toast() {
+            var x = document.getElementById("snackbar");
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }
+
+        function toastRemoved() {
+            var x = document.getElementById("snackbar2");
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }
+
+        function removeProduct(name) {
+            swal({
+                title: "Remove Product",
+                text: "Do you want to remove product: " + name + "?",
+                type: "warning",
+                showCancelButton: true,
+            }).then(function () {
+                $.ajax({
+                    url: '@Url.Action("Remove", "Dashboard")',
+                    type: 'GET',
+                    cache: false,
+                    data: {
+                        Id: name
+                    },
+                    success: function (data) {
+                        if (data) {
+                            swal({
+                                title: "OK!",
+                                text: "The product: " + name + " has been succesfully removed.",
+                                type: "success",
+                                showCancelButton: false,
+                            }).then(function () {
+                                location.reload();
+                            });
+                        }
+                        else {
+                            notifyError("An error ocurred while trying to remove the product: " + name, true);
+                        }
+                    },
+                    error: function () {
+                        notifyError("An error ocurred while trying to remove the product: " + name, true);
+                    }
+                });
+            });
+        }
+    </script>
+}

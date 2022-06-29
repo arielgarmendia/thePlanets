@@ -1,0 +1,61 @@
+﻿@model DashboardPageData
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="theInventory" />
+
+    <link rel="stylesheet" href="~/css/custom.css" type="text/css" />
+
+    @RenderSection("Styles")
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Document Title ============================================= -->
+    <title>theInventory</title>
+</head>
+
+<body class="stretched side-panel-left">
+
+    <div class="body-overlay"></div>
+
+    <div id="side-panel" class="dark">
+
+        <div id="side-panel-trigger-close" class="side-panel-trigger"><a href="#"><i class="icon-line-cross"></i></a></div>
+
+        <div class="side-panel-wrap">
+
+            <div class="widget clearfix">
+
+                <h4>CONTROL PANEL</h4>
+
+                <nav class="nav-tree nobottommargin">
+                    <ul>
+                        <li>
+                            <a href="/dashboard"><i class="icon-dashboard"></i>Dashboard</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Document Wrapper
+    ============================================= -->
+    <div id="wrapper" class="clearfix">
+
+        @RenderBody()
+
+    </div>
+    <!-- #wrapper end -->
+
+ <!-- Go To Top ============================================= -->
+    <div id="gotoTop" class="icon-angle-up"></div>
+
+    @RenderSection("Scripts")
+</body>
+</html>

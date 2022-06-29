@@ -1,0 +1,4 @@
+﻿@if (ViewData.ModelState.ContainsKey("invalid"))
+{
+    <div class="text-danger"><p>@ViewData.ModelState["invalid"].Errors[0].ErrorMessage</p></div>
+}
