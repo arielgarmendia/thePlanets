@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Inventory.WebAPI.Model
+namespace Planets.WebAPI.Model
 {
     public class Product : BaseProduct
     {

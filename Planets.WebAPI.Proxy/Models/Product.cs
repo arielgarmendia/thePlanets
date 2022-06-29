@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Inventory.WebAPI.Proxy.Models
+namespace Planets.WebAPI.Proxy.Models
 {
     public class Product : BaseProduct
     {

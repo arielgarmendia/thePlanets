@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
-namespace Inventory.Website.Models
+namespace Planets.Website.Models
 {
 
     // Add profile data for application users by adding properties to the ApplicationUser class

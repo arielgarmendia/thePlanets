@@ -2,7 +2,7 @@
 using StackExchange.Exceptional;
 using System.Threading.Tasks;
 
-namespace Mabui.Finance.Controllers
+namespace Planets.Website.Controllers
 {
     public class ShowErrorsController : Controller
     {

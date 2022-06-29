@@ -3,15 +3,15 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Inventory.Website.Models;
+using Planets.Website.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Inventory.WebAPI.Proxy;
-using Inventory.WebAPI.Proxy.Models;
+using Planets.WebAPI.Proxy;
+using Planets.WebAPI.Proxy.Models;
 
-namespace Inventory.Website.Controllers
+namespace Planets.Website.Controllers
 {
     [Authorize]
     public class DashboardController : Controller

@@ -4,14 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Inventory.Website.Models;
+using Planets.Website.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-namespace Inventory.Website.Controllers
+namespace Planets.Website.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]

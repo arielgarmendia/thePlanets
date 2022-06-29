@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting.Internal;
 using Newtonsoft.Json;
 using SQLite;
 
-namespace Inventory.WebAPI.Model
+namespace Planets.WebAPI.Model
 {
     public class BaseProduct
     {

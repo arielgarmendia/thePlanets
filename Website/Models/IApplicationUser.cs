@@ -1,4 +1,4 @@
-namespace Inventory.Website.Models
+namespace Planets.Website.Models
 {
 
     public interface IApplicationUser

@@ -1,5 +1,5 @@
-﻿using Inventory.WebAPI.Proxy.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Planets.WebAPI.Proxy.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory.WebAPI.Proxy
+namespace Planets.WebAPI.Proxy
 {
     public class ProductsProxy
     {

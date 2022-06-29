@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Inventory.Website.Models
+namespace Planets.Website.Models
 {
     public class LoginPageData
     {

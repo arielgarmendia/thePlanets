@@ -1,5 +1,5 @@
-﻿using Inventory.WebAPI.Proxy;
-using Inventory.WebAPI.Proxy.Models;
+﻿using Planets.WebAPI.Proxy;
+using Planets.WebAPI.Proxy.Models;
 using System;
 using System.Collections.Generic;
 
