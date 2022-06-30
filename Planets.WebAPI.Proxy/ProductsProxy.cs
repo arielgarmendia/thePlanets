@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Planets.WebAPI.Proxy.Models;
+using Planets.Website.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -9,51 +10,11 @@ using System.Threading.Tasks;
 
 namespace Planets.WebAPI.Proxy
 {
-    public class ProductsProxy
+    public class PlanetsProxy
     {
-        static string baseAddress = "https://theinventorywebapi.travelgosystems.net/";//"http://localhost:61889/";//;
+        static string baseAddress = "http://localhost:61889//";
 
-        public static async Task<bool> SendProducts(List<Product> products)
-        {
-            HttpClient client = new HttpClient();
-
-            client.BaseAddress = new Uri(baseAddress);
-
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
-            var body = new StringContent(JsonConvert.SerializeObject(products), Encoding.UTF8, "application/json");
-
-            var resp2 = client.PostAsync("api/products", body).Result;
-
-            resp2.EnsureSuccessStatusCode();
-
-            var ss = await resp2.Content.ReadAsStringAsync();
-
-            return resp2.IsSuccessStatusCode;
-        }
-
-        public static async Task<bool> SendProduct(Product product)
-        {
-            HttpClient client = new HttpClient();
-
-            client.BaseAddress = new Uri(baseAddress);
-
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
-            var body = new StringContent(JsonConvert.SerializeObject(product), Encoding.UTF8, "application/json");
-
-            var resp2 = client.PostAsync("api/products/insert", body).Result;
-
-            resp2.EnsureSuccessStatusCode();
-
-            var ss = await resp2.Content.ReadAsStringAsync();
-
-            return resp2.IsSuccessStatusCode;
-        }
-
-        public static async Task<List<Product>> GetProducts()
+        public static async Task<DashboardPageData> GetAsteroids(string planet)
         {
             try
             {
@@ -61,10 +22,14 @@ namespace Planets.WebAPI.Proxy
 
                 client.BaseAddress = new Uri(baseAddress);
 
-                var response = await client.GetAsync("api/products/all");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                //Direct Get without JSon's DeserializeObject
-                List<Product> products = await response.Content.ReadAsAsync<List<Product>>();
+                var body = new StringContent(JsonConvert.SerializeObject(new { Name = planet }), Encoding.UTF8, "application/json");
+
+                var response = client.PostAsync("api/asteroids/", body).Result;
+
+                response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -74,7 +39,7 @@ namespace Planets.WebAPI.Proxy
 
                         try
                         {
-                            return JsonConvert.DeserializeObject<List<Product>>(data);
+                            return JsonConvert.DeserializeObject<DashboardPageData>(data);
                         }
                         catch (Exception)
                         {
@@ -85,68 +50,10 @@ namespace Planets.WebAPI.Proxy
                 else
                     return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
-        }
-
-        public static async Task<Product> GetProduct(string name)
-        {
-            try
-            {
-                HttpClient client = new HttpClient();
-
-                client.BaseAddress = new Uri(baseAddress);
-
-                var response = await client.GetAsync("api/products/" + WebUtility.HtmlEncode(name));
-
-                //Direct Get without JSon's DeserializeObject
-                Product product = await response.Content.ReadAsAsync<Product>();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    using (HttpContent content = response.Content)
-                    {
-                        string data = await content.ReadAsStringAsync();
-
-                        try
-                        {
-                            return JsonConvert.DeserializeObject<Product>(data);
-                        }
-                        catch (Exception)
-                        {
-                            return null;
-                        }
-                    }
-                }
-                else
-                    return null;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        public static async Task<bool> DeleteProduct(string name)
-        {
-            HttpClient client = new HttpClient();
-
-            client.BaseAddress = new Uri(baseAddress);
-
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
-            var body = new StringContent("", Encoding.UTF8, "application/json");
-
-            var resp2 = client.PostAsync("api/products/delete/" + WebUtility.HtmlEncode(name), body).Result;
-
-            resp2.EnsureSuccessStatusCode();
-
-            var ss = await resp2.Content.ReadAsStringAsync();
-
-            return resp2.IsSuccessStatusCode;
         }
     }
 }

@@ -52,7 +52,6 @@
 
                 <ul>
                     <li class="current"><a href=""><div>Dashboard</div></a></li>
-                    <li><a href="/insertion"><div>Insert Product</div></a></li>
                     <li><a href="/account/logout"><div>Log Out</div></a></li>
                 </ul>
 
@@ -65,17 +64,6 @@
 
 </header>
 <!-- #header end -->
-<!-- Page Title
-============================================= -->
-<section id="page-title">
-
-    <div class="container clearfix">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="insertion"><i class=""></i> &nbsp;INSERT PRODUCT</a></li>
-        </ol>
-    </div>
-
-</section>
 <!-- #page-title end -->
 <!-- Content
 ============================================= -->
@@ -84,28 +72,21 @@
     <div class="content-wrap">
 
         <div class="container clearfix nobottommargin nobottompadding">
-            <div id="snackbar">
-                @if (!Model.ProductRemoved && Model.Expired != null && Model.Expired.Count != 0)
-                {
-                    <text>You have @Model.Expired.Count.ToString() expired products!</text>
-                }
-            </div>
-
             <div id="snackbar2">
-                @if (Model.ProductRemoved)
+                @if (Model.Message != "")
                 {
-                    <text>Product has been successfuly removed!</text>
+                    <text>@Model.Message</text>
                 }
             </div>
 
-            <h4>PRODUCTS INVENTORY</h4>
+            <h4>ASTEROIDS</h4>
 
             <div class="tabs clearfix" id="tab-3">
 
                 <ul class="tab-nav tab-nav2 clearfix">
 
-                    <li><a href="#tabs-1">ALL PRODUCTS</a></li>
-                    <li class="hidden-phone"><a href="#tabs-3">EXPIRED PRODUCTS</a></li>
+                    <li><a href="#tabs-1">Asteroids 1</a></li>
+                    <li class="hidden-phone"><a href="#tabs-3">Asteroids 2</a></li>
                 </ul>
 
                 <div class="tab-container">
@@ -157,25 +138,17 @@
                                                     <th>Product Name</th>
                                                     <th>Insertion Date</th>
                                                     <th>Type</th>
-                                                    <th class="text-center"></th>
-                                                    <th class="text-center"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if (Model.Products != null && Model.Products.Count != 0)
+                                                @if (Model.Result1 != null && Model.Result1.Count != 0)
                                                 {
-                                                    foreach (var product in Model.Products)
+                                                    foreach (var product in Model.Result1)
                                                     {
                                                         <tr>
                                                             <td class="pt-3-half">@product.Name</td>
                                                             <td class="pt-3-half">@product.InsertionDate.ToString("dd/MM/yyyy")</td>
                                                             <td class="pt-3-half">@product.Type</td>
-                                                            <td style="text-align:center">
-                                                                <span class="table-remove"><a target="_self" href="javascript:;" onclick="event.stopPropagation(); removeProduct('@(product.Name)');" class="btn btn-danger btn-rounded btn-sm my-0">Remove</a></span>
-                                                            </td>
-                                                            <td style="text-align:center">
-                                                                <span class="table-remove"><a target="_blank" href="dashboard/document/@product.Name" class="btn btn-info btn-rounded btn-sm my-0">Generate Document</a></span>
-                                                            </td>
                                                         </tr>
                                                     }
                                                 }
@@ -234,25 +207,17 @@
                                                     <th>Product Name</th>
                                                     <th>Expiry Date</th>
                                                     <th>Type</th>
-                                                    <th class="text-center"></th>
-                                                    <th class="text-center"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if (Model.Expired != null && Model.Expired.Count != 0)
+                                                @if (Model.Result2 != null && Model.Result2.Count != 0)
                                                 {
-                                                    foreach (var product in Model.Expired)
+                                                    foreach (var product in Model.Result2)
                                                     {
                                                         <tr>
                                                             <td>@product.Name</td>
                                                             <td>@product.ExpiryDate.ToString("dd/MM/yyyy")</td>
                                                             <td>@product.Type</td>
-                                                            <td style="text-align:center">
-                                                                <span class="table-remove"><a target="_self" href="javascript:;" onclick="event.stopPropagation(); removeProduct('@(product.Name)');" class="btn btn-danger btn-rounded btn-sm my-0">Remove</a></span>
-                                                            </td>
-                                                            <td style="text-align:center">
-                                                                <span class="table-remove"><a target="_blank" href="dashboard/document/@product.Name" class="btn btn-info btn-rounded btn-sm my-0">Generate Document</a></span>
-                                                            </td>
                                                         </tr>
                                                     }
                                                 }
@@ -306,12 +271,11 @@
         $(document).ready(function () {
             $('#datatable1').dataTable();
             $('#datatable3').dataTable();
-            toast();
 
-            @if (Model.ProductRemoved)
+            @if (Model.Message != "")
             {
                 <text>
-                    toastRemoved();
+                    toastError();
                 </text>
             }
         });
@@ -362,13 +326,7 @@
             });
         });
 
-        function toast() {
-            var x = document.getElementById("snackbar");
-            x.className = "show";
-            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
-        }
-
-        function toastRemoved() {
+        function toastError() {
             var x = document.getElementById("snackbar2");
             x.className = "show";
             setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);

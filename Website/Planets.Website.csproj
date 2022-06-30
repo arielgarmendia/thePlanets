@@ -668,19 +668,10 @@
     <Content Update="Views\Account\Response.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Insertion\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Views\Shared\_LoginLayout.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Dashboard\Document.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Views\Dashboard\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_DocLayout.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>
@@ -690,6 +681,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Planets.Model\Planets.Model.csproj" />
     <ProjectReference Include="..\Planets.WebAPI.Proxy\Planets.WebAPI.Proxy.csproj" />
   </ItemGroup>
 
