@@ -4,6 +4,17 @@ using System.Linq;
 
 namespace Planets.WebAPI.Model
 {
+    public class JSONAsteroids
+    {
+        public int element_count { get; set; }
+        public dynamic near_earth_objects { get; set; }
+    }
+
+    public class JSONDatesAsteroids
+    {
+        public Dictionary<string, List<NasaAsteroid>> dates_asteroids { get; set; }
+    }
+
     public class NasaNearEarthAsteroids
     { 
         public List<NasaAsteroid> near_earth_objects { get; set; }

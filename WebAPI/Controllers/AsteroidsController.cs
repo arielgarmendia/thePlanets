@@ -59,24 +59,30 @@ namespace Planets.WebAPI.Controllers
 
                         try
                         {
-                            var nasaNearEarthAsteroids = JsonConvert.DeserializeObject<NasaNearEarthAsteroids>(data);
+                            var jsonAsteroids = JsonConvert.DeserializeObject<JSONAsteroids>(data);
 
-                            if (nasaNearEarthAsteroids != null && nasaNearEarthAsteroids.near_earth_objects != null && nasaNearEarthAsteroids.near_earth_objects.Any())
+                            var nasaNearEarthDatesAsteroids = JsonConvert.DeserializeObject<JSONDatesAsteroids>(jsonAsteroids.near_earth_objects);
+
+                            if (nasaNearEarthDatesAsteroids != null && nasaNearEarthDatesAsteroids.dates_asteroids != null && nasaNearEarthDatesAsteroids.dates_asteroids.Any())
                             {
-                                var riskOfCollition = nasaNearEarthAsteroids.near_earth_objects.Where(a => a.is_potentially_hazardous_asteroid);
-
-                                foreach (var asteroid in riskOfCollition)
+                                foreach (var dateAsteroids in nasaNearEarthDatesAsteroids.dates_asteroids.Value)
                                 {
-                                    var newAsteroid = new Asteroid()
+                                    foreach (var nasaAsteroids in dateAsteroids)
                                     {
-                                        Name = asteroid.name,
-                                        Planet = asteroid.close_approach_data.orbiting_body,
-                                        Date = asteroid.close_approach_data.close_approach_date,
-                                        Diameter = (asteroid.estimated_diameter.kilometers.estimated_diameter_max - asteroid.estimated_diameter.kilometers.estimated_diameter_min) == 0 ? asteroid.estimated_diameter.kilometers.estimated_diameter_max : (asteroid.estimated_diameter.kilometers.estimated_diameter_min + ((asteroid.estimated_diameter.kilometers.estimated_diameter_max - asteroid.estimated_diameter.kilometers.estimated_diameter_min) / 2)),
-                                        Velocity = asteroid.close_approach_data.relative_velocity.kilometers_per_hour
-                                    };
+                                        if (nasaAsteroids.is_potentially_hazardous_asteroid)
+                                        {
+                                            var newAsteroid = new Asteroid()
+                                            {
+                                                Name = nasaAsteroids.name,
+                                                Planet = nasaAsteroids.close_approach_data.orbiting_body,
+                                                Date = nasaAsteroids.close_approach_data.close_approach_date,
+                                                Diameter = (nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_max - nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_min) == 0 ? nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_max : (nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_min + ((nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_max - nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_min) / 2)),
+                                                Velocity = nasaAsteroids.close_approach_data.relative_velocity.kilometers_per_hour
+                                            };
 
-                                    asteroids.Add(newAsteroid);
+                                            asteroids.Add(newAsteroid);
+                                        }
+                                    }
                                 }
                             }
                             else
