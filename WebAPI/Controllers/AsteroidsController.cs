@@ -39,7 +39,7 @@ namespace Planets.WebAPI.Controllers
             SearchParams parameter = JsonConvert.DeserializeObject<SearchParams>(jsonbody.ToString());
 
             if (parameter.planet == "")
-                return new JsonResult(new { Message = "You must specifie a target planet.", asteroids });
+                return new JsonResult(new { Message = "You must specifie a target planet.", Result = asteroids });
 
             try
             {
@@ -61,32 +61,35 @@ namespace Planets.WebAPI.Controllers
                         {
                             var jsonAsteroids = JsonConvert.DeserializeObject<JSONAsteroids>(data);
 
-                            var nasaNearEarthDatesAsteroids = JsonConvert.DeserializeObject<JSONDatesAsteroids>(jsonAsteroids.near_earth_objects);
-
-                            if (nasaNearEarthDatesAsteroids != null && nasaNearEarthDatesAsteroids.dates_asteroids != null && nasaNearEarthDatesAsteroids.dates_asteroids.Any())
+                            if (jsonAsteroids.near_earth_objects != null)
                             {
-                                foreach (var dateAsteroids in nasaNearEarthDatesAsteroids.dates_asteroids.Value)
+                                foreach (var token in jsonAsteroids.near_earth_objects.Children())
                                 {
-                                    foreach (var nasaAsteroids in dateAsteroids)
-                                    {
-                                        if (nasaAsteroids.is_potentially_hazardous_asteroid)
-                                        {
-                                            var newAsteroid = new Asteroid()
-                                            {
-                                                Name = nasaAsteroids.name,
-                                                Planet = nasaAsteroids.close_approach_data.orbiting_body,
-                                                Date = nasaAsteroids.close_approach_data.close_approach_date,
-                                                Diameter = (nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_max - nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_min) == 0 ? nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_max : (nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_min + ((nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_max - nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_min) / 2)),
-                                                Velocity = nasaAsteroids.close_approach_data.relative_velocity.kilometers_per_hour
-                                            };
+                                    var nasaNearEarthDatesAsteroids = JsonConvert.DeserializeObject<List<NasaAsteroid>>((token as Newtonsoft.Json.Linq.JProperty).Value.ToString());
 
-                                            asteroids.Add(newAsteroid);
+                                    if (nasaNearEarthDatesAsteroids != null && nasaNearEarthDatesAsteroids.Any())
+                                    {
+                                        foreach (var nasaAsteroids in nasaNearEarthDatesAsteroids)
+                                        {
+                                            if (nasaAsteroids.is_potentially_hazardous_asteroid)
+                                            {
+                                                var newAsteroid = new Asteroid()
+                                                {
+                                                    Name = nasaAsteroids.name,
+                                                    Planet = nasaAsteroids.close_approach_data.FirstOrDefault().orbiting_body,
+                                                    Date = Convert.ToDateTime(nasaAsteroids.close_approach_data.FirstOrDefault().close_approach_date),
+                                                    Diameter = (nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_max - nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_min) == 0 ? nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_max : (nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_min + ((nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_max - nasaAsteroids.estimated_diameter.kilometers.estimated_diameter_min) / 2)),
+                                                    Velocity = Convert.ToDouble(nasaAsteroids.close_approach_data.FirstOrDefault().relative_velocity.kilometers_per_hour)
+                                                };
+
+                                                asteroids.Add(newAsteroid);
+                                            }
                                         }
                                     }
                                 }
                             }
                             else
-                                return new JsonResult(new { Message = "No asteroids were found matching the search criteria. Please tsry a different combination of parameters.", asteroids });
+                                return new JsonResult(new { Message = "No asteroids were found matching the search criteria. Please tsry a different combination of parameters.", Result = asteroids });
                         }
                         catch
                         {
@@ -94,15 +97,21 @@ namespace Planets.WebAPI.Controllers
                         }
                     }
                 }
+                else
+                {
+                    var result = new JsonResult(new { Message = "The server failed to process this request. Please verify source data is compatible.", Result = asteroids });
+
+                    return result;
+                }
             }
             catch (Exception)
             {
-                var result = new JsonResult(new { Message = "The server failed to process this file. Please verify source data is compatible.", asteroids });
+                var result = new JsonResult(new { Message = "The server failed to process this request. Please verify source data is compatible.", Result = asteroids });
 
-                result.StatusCode = 500;
+                return result;
             }
 
-            return new JsonResult(new { Message = "", asteroids });
+            return new JsonResult(new { Message = "", Result = asteroids });
         }
     }
 }

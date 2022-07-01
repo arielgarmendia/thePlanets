@@ -8,8 +8,8 @@ namespace Planets.WebAPI.Model
     {
         public string Name { get; set; }
         public DateTime Date { get; set; }
-        public decimal Diameter { get; set; }
-        public decimal Velocity { get; set; }
+        public double Diameter { get; set; }
+        public double Velocity { get; set; }
         public string Planet { get; set; }
     }
 }
