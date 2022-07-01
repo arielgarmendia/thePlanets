@@ -7,7 +7,6 @@ namespace Planets.Website.Models
     public class DashboardPageData
     {
         public string Message { get; set; }
-        public List<Asteroid> Result1 { get; set; }
-        public List<Asteroid> Result2 { get; set; }
+        public List<Asteroid> Result { get; set; }
     }
 }

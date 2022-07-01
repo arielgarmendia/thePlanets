@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "planets.webapi",
+      "composeLaunchUrl": "{Scheme}://{ServiceIPAddress}{ServicePort}/api/asteroids",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "planets.webapi": "StartDebugging"
+      }
+    }
+  }
+}

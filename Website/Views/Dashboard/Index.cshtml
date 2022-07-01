@@ -72,21 +72,57 @@
     <div class="content-wrap">
 
         <div class="container clearfix nobottommargin nobottompadding">
-            <div id="snackbar2">
-                @if (Model.Message != "")
+            <div id="snackbar">
+                @if (Model != null && Model.Message != null && Model.Message != "")
                 {
                     <text>@Model.Message</text>
                 }
             </div>
 
-            <h4>ASTEROIDS</h4>
+            <div class="col_full card">
+                <form id="search-asteroids" name="search-asteroids" class="nobottommargin" asp-action="Search" asp-controller="Dashboard">
+
+                    <div class="card-header">Search for Near-Collition Asteroids</div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputName">Name</label>
+                                <input class="required form-control" id="inputName" name="inputName" value="@ViewBag.Planet">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Start Date</label>
+                                <div class="input-group input-daterange travel-date-group">
+                                    <input type="text" id="startDate" name="startDate" value="@ViewBag.StartDate.ToString("dd/MM/yyyy")" class="form-control tleft format today" placeholder="DD/MM/YYYY" />
+                                    <div class="input-group-append">
+                                        <div class="input-group-text"><i class="icon-calendar2"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>End Date</label>
+                                <div class="input-group input-daterange travel-date-group">
+                                    <input type="text" id="endDate" name="endDate" value="@ViewBag.EndDate.ToString("dd/MM/yyyy")" class="form-control tleft format today" placeholder="DD/MM/YYYY" />
+                                    <div class="input-group-append">
+                                        <div class="input-group-text"><i class="icon-calendar2"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <a href="javascript:searchClicked();" class="button button-3d button-mini button-rounded button-red"><i class="icon-search"></i><span>Search</span></a>
+                    </div>
+                </form>
+            </div>
 
             <div class="tabs clearfix" id="tab-3">
 
                 <ul class="tab-nav tab-nav2 clearfix">
 
-                    <li><a href="#tabs-1">Asteroids 1</a></li>
-                    <li class="hidden-phone"><a href="#tabs-3">Asteroids 2</a></li>
+                    <li><a href="#tabs-1">Near-Collition Asteroids</a></li>
                 </ul>
 
                 <div class="tab-container">
@@ -135,20 +171,24 @@
                                         <table id="datatable1" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Product Name</th>
-                                                    <th>Insertion Date</th>
-                                                    <th>Type</th>
+                                                    <th>Planet</th>
+                                                    <th>Asteroid</th>
+                                                    <th>Date</th>
+                                                    <th>Diameter</th>
+                                                    <th>Velocity</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if (Model.Result1 != null && Model.Result1.Count != 0)
+                                                @if (Model != null && Model.Result != null && Model.Result.Any())
                                                 {
-                                                    foreach (var product in Model.Result1)
+                                                    foreach (var asteroid in Model.Result)
                                                     {
                                                         <tr>
-                                                            <td class="pt-3-half">@product.Name</td>
-                                                            <td class="pt-3-half">@product.InsertionDate.ToString("dd/MM/yyyy")</td>
-                                                            <td class="pt-3-half">@product.Type</td>
+                                                            <td class="pt-3-half">@asteroid.Planet</td>
+                                                            <td class="pt-3-half">@asteroid.Name</td>
+                                                            <td class="pt-3-half">@asteroid.Date.ToString("yyyy-MM-dd")</td>
+                                                            <td class="pt-3-half">@asteroid.Diameter.ToString("N2") Kms</td>
+                                                            <td class="pt-3-half">@asteroid.Velocity.ToString("N2") Km/h</td>
                                                         </tr>
                                                     }
                                                 }
@@ -160,75 +200,6 @@
                         </div>
                     </div>
                     <!-- End Tab COMPILED -->
-                    <!-- Tab PROCESSED -->
-                    <div class="tab-content clearfix" id="tabs-3">
-                        <div class="col_full bottommargin-lg">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="input-daterange travel-date-group">
-                                        <label>Choose a Date Range:</label>
-                                        <table border="0" cellspacing="5" cellpadding="5">
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        From
-                                                    </td>
-                                                    <td>
-                                                        <div class="input-daterange travel-date-group">
-                                                            <div class="input-group">
-                                                                <input type="text" id="min2" name="min2" class="form-control tleft format today" placeholder="DD-MM-YYYY" />
-                                                                <div class="input-group-append">
-                                                                    <div class="input-group-text"><i class="icon-calendar2"></i></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        To
-                                                    </td>
-                                                    <td>
-                                                        <div class="input-daterange travel-date-group">
-                                                            <div class="input-group">
-                                                                <input type="text" id="max2" name="max2" class="form-control tleft format today" placeholder="DD-MM-YYYY" />
-                                                                <div class="input-group-append">
-                                                                    <div class="input-group-text"><i class="icon-calendar2"></i></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <table id="datatable3" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>Product Name</th>
-                                                    <th>Expiry Date</th>
-                                                    <th>Type</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if (Model.Result2 != null && Model.Result2.Count != 0)
-                                                {
-                                                    foreach (var product in Model.Result2)
-                                                    {
-                                                        <tr>
-                                                            <td>@product.Name</td>
-                                                            <td>@product.ExpiryDate.ToString("dd/MM/yyyy")</td>
-                                                            <td>@product.Type</td>
-                                                        </tr>
-                                                    }
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Tab PROCESSED -->
 
                 </div>
 
@@ -245,8 +216,10 @@
     <!-- External JavaScripts
     ============================================= -->
     <script src="~/js/jquery.js"></script>
-
     <script src="~/js/plugins.js"></script>
+
+    <!-- Bootstrap Select Plugin -->
+    <script src="~/js/components/bs-select.js"></script>
 
     <!-- Date & Time Picker JS -->
     <script src="~/js/components/moment.js"></script>
@@ -260,7 +233,7 @@
 
     <!-- Footer Scripts
     ============================================= -->
-    <script src="js/functions.js"></script>
+    <script src="~/js/functions.js"></script>
 
     <!-- Site Scripts
     ============================================= -->
@@ -270,9 +243,8 @@
 
         $(document).ready(function () {
             $('#datatable1').dataTable();
-            $('#datatable3').dataTable();
 
-            @if (Model.Message != "")
+            @if (Model != null && Model.Message != null && Model.Message != "")
             {
                 <text>
                     toastError();
@@ -282,10 +254,11 @@
 
 
         $(function () {
-            $('.travel-date-group .input-daterange').datepicker({
+            $('.travel-date-group .today').datepicker({
                 autoclose: true,
-                format: "dd/mm/yyyy",
-                todayHighlight: true
+                startDate: "today",
+                todayHighlight: true,
+                format: 'dd/mm/yyyy'
             });
         });
 
@@ -310,62 +283,89 @@
             $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
             $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
 
-            $("#min2").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-            $("#max2").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-
             var table = $('#datatable1').DataTable();
-            var table2 = $('#datatable3').DataTable();
 
             // Event listener to the two range filtering inputs to redraw on input
             $('#min, #max').change(function () {
                 table.draw();
             });
-
-            $('#min2, #max2').change(function () {
-                table2.draw();
-            });
         });
 
         function toastError() {
-            var x = document.getElementById("snackbar2");
+            var x = document.getElementById("snackbar");
             x.className = "show";
             setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
         }
 
-        function removeProduct(name) {
-            swal({
-                title: "Remove Product",
-                text: "Do you want to remove product: " + name + "?",
-                type: "warning",
-                showCancelButton: true,
-            }).then(function () {
-                $.ajax({
-                    url: '@Url.Action("Remove", "Dashboard")',
-                    type: 'GET',
-                    cache: false,
-                    data: {
-                        Id: name
-                    },
-                    success: function (data) {
-                        if (data) {
-                            swal({
-                                title: "OK!",
-                                text: "The product: " + name + " has been succesfully removed.",
-                                type: "success",
-                                showCancelButton: false,
-                            }).then(function () {
-                                location.reload();
-                            });
-                        }
-                        else {
-                            notifyError("An error ocurred while trying to remove the product: " + name, true);
-                        }
-                    },
-                    error: function () {
-                        notifyError("An error ocurred while trying to remove the product: " + name, true);
+        function searchClicked() {
+            var allValid = true;
+
+            if (document.getElementById('inputName').value == '') {
+                if (allValid) {
+                    allValid = false;
+                    $("#inputName").focus();
+                }
+
+                $("#inputName").addClass('error');
+            }
+            else
+                $("#inputName").removeClass('error');
+
+            if (document.getElementById('startDate').value != '') {
+                if (moment(document.getElementById('startDate').value, 'DD/MM/YYYY', true).isValid())
+                    $("#startDate").removeClass('error');
+                else {
+                    if (allValid) {
+                        allValid = false;
+                        $("#startDate").focus();
                     }
+
+                    $("#startDate").addClass('error');
+                }
+            }
+
+            if (document.getElementById('endDate').value != '') {
+                if (moment(document.getElementById('endDate').value, 'DD/MM/YYYY', true).isValid())
+                    $("#endDate").removeClass('error');
+                else {
+                    if (allValid) {
+                        allValid = false;
+                        $("#endDate").focus();
+                    }
+
+                    $("#endDate").addClass('error');
+                }
+            }
+
+            if (allValid) {
+                swal({
+                    title: "Search for Asteroids",
+                    text: "Do you want to search for near-collision asteroids to planet: " + $("#inputName").val() + "?",
+                    type: "warning",
+                    showCancelButton: true,
+                }).then(function() {
+                    $.ajax({
+                        url: '@Url.Action("Search", "Dashboard")',
+                        type: 'GET',
+                        cache: false,
+                        data: {
+                            planet: $("#inputName").val(),
+                            start_date: $("#startDate").val(),
+                            end_date: $("#endDate").val()
+                        },
+                        success: function(data) {
+                            if (data) {
+                            }
+                            else {
+                                notifyError("An error ocurred while trying to retrieve near-collision asteroids to planet: " + $("#inputName").val(), true);
+                            }
+                        },
+                        error: function() {
+                            notifyError("An error ocurred while trying to retrieve near-collision asteroids to planet: " + $("#inputName").val(), true);
+                        }
+                    });
                 });
-            });
+            }
         }
     </script>
 }

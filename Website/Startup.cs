@@ -53,7 +53,6 @@ namespace Inventory.Website
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -72,9 +71,6 @@ namespace Inventory.Website
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Dashboard}/{action=Index}/{id?}");
-                routes.MapRoute(
-                    name: "useredit",
-                    template: "{controller=CompanyStaffEdit}/{action=Index}/{id}");
             });
         }
     }

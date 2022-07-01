@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Planets.Website.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Planets.WebAPI.Proxy.Models;
+
+using Planets.Website.Models;
 
 namespace Planets.Website.Controllers
 {
@@ -71,7 +70,7 @@ namespace Planets.Website.Controllers
                         if (returnUrl == null)
                             return Content("<script language='javascript' type='text/javascript'>window.location = '/dashboard';</script>");
                         else
-                            return Content("<script language='javascript' type='text/javascript'>window.location = '" + returnUrl + "';</script>");//RedirectToLocal(returnUrl);
+                            return Content("<script language='javascript' type='text/javascript'>window.location = '" + returnUrl + "';</script>");
                     }
                     else
                         ModelState.AddModelError("invalid", "Invalid login, please try again.");
@@ -97,18 +96,6 @@ namespace Planets.Website.Controllers
             };
 
             return View("Login", pageData);
-        }
-
-        private IActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction(nameof(AccountController.Login), "Login");
-            }
         }
 
         public IActionResult Error()

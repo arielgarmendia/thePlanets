@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  planets.webapi:
+    image: ${DOCKER_REGISTRY-}planetswebapi
+    build:
+      context: .
+      dockerfile: WebAPI\Dockerfile
