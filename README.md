@@ -2,12 +2,13 @@
 
 ## **About:**
 
-Example solution to provide a list of close encounter objects for a planet. 
+Example solution to provide a list of near-collition objects to a planet. 
 
 ## **Important tips and notes:**
 
 - **Clone** this repository in your local repo folder then **Open** solution then **Rebuild** solution to restore **Nuget** packages.
-- Before launching the website check the *WebAPI* application is running in yout *IIS Express*.
+- Before launching the website check the *WebAPI* service is running in yout *IIS Express*. 
+    - Also check the port number in use by the WebAPI service, and compare it with the one assigned in Planets.WebAPI.Proxy/PlanetsProxu.ce => static string baseAddress = "http://localhost:61889/";.
 - Login and password to access the website are: 
     - **login**: admin 
     - **password**: 1Planets23
