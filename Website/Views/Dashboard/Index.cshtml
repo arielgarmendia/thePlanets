@@ -200,6 +200,7 @@
                     if (min == null && startDate <= max) { return true; }
                     if (max == null && startDate >= min) { return true; }
                     if (startDate <= max && startDate >= min) { return true; }
+
                     return false;
                 }
             );
@@ -259,6 +260,31 @@
 
                     $("#endDate").addClass('error');
                 }
+            }
+
+            try {
+                var startDateParts = $("#startDate").val().split("/");
+                var endDateParts = $("#endDate").val().split("/");
+
+                if ((endDateParts[0] - startDateParts[0]) > 7) {
+                    if (allValid) {
+                        allValid = false;
+                        $("#endDate").focus();
+                    }
+
+                    $("#endDate").addClass('error');
+
+                    swal({
+                        title: "Dates Error",
+                        text: "Dates cannot be for more than a week (7 days).",
+                        type: "error",
+                        showCancelButton: false,
+                    }).then(function() {
+                    });
+                }
+            }
+            catch (err) {
+                $("#endDate").addClass('error');
             }
 
             if (allValid) {

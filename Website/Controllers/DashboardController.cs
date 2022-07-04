@@ -30,11 +30,13 @@ namespace Planets.Website.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Search(string planet, DateTime start_date, DateTime end_date)
+        public async Task<IActionResult> Search(string planet, string start_date, string end_date)
         {
             try
             {
-                var searchResults = await PlanetsProxy.GetAsteroids(planet, start_date, end_date, Convert.ToString(siteConfig["ApiKey"]));
+                var culture = new System.Globalization.CultureInfo("es-ES");
+
+                var searchResults = await PlanetsProxy.GetAsteroids(planet, DateTime.Parse(start_date, culture), DateTime.Parse(end_date, culture), Convert.ToString(siteConfig["ApiKey"]));
 
                 return PartialView("_SearchResults", searchResults);
             }
