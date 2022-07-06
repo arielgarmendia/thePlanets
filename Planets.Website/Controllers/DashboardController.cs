@@ -36,6 +36,8 @@ namespace Planets.Website.Controllers
             {
                 var culture = new System.Globalization.CultureInfo("es-ES");
 
+                var result = await PlanetsProxy.Test();
+
                 var searchResults = await PlanetsProxy.GetAsteroids(planet, DateTime.Parse(start_date, culture), DateTime.Parse(end_date, culture), Convert.ToString(siteConfig["ApiKey"]));
 
                 return PartialView("_SearchResults", searchResults);

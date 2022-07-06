@@ -10,7 +10,7 @@ namespace Planets.WebAPI.Proxy
 {
     public class PlanetsProxy
     {
-        static string baseAddress = "http://localhost:61889/";
+        static string baseAddress = "http://localhost:8282/";
 
         public static async Task<bool> Test()
         {
